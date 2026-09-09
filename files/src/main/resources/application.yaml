@@ -1,6 +1,10 @@
 spring:
   application:
     name: files
+  profiles: 
+    active: dev 
+  config: 
+    import: optional:file:.env[.properties] 
 
 server:
-  port: 8081
+  port: 8082

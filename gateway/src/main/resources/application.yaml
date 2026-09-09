@@ -3,5 +3,10 @@ spring:
     name: gateway
   main:
     web-application-type: reactive
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: dev
+    
 server:
-  port: 8080
+  port: 8080 
