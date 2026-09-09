@@ -1,3 +1,10 @@
 spring:
   application:
     name: auth
+  profiles: 
+    active: dev 
+  config: 
+    import: optional:file:.env[.properties] 
+
+server:
+  port: 8081
