@@ -5,6 +5,9 @@ spring:
     active: dev 
   config: 
     import: optional:file:.env[.properties] 
+api:
+  public-key: ${PUBLIC_KEY}
+  private-key: ${PRIVATE_KEY}
 
 server:
   port: 8081
