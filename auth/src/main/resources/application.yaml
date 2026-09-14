@@ -6,8 +6,8 @@ spring:
   config: 
     import: optional:file:.env[.properties] 
 api:
-  public-key: ${PUBLIC_KEY}
-  private-key: ${PRIVATE_KEY}
-
+  public-key:  classpath:public.key
+  private-key: classpath:private.key
+ 
 server:
   port: 8081
