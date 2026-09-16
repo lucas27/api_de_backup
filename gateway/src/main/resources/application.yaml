@@ -7,6 +7,10 @@ spring:
     import: optional:file:.env[.properties]
   profiles:
     active: dev
-    
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:public.key
 server:
   port: 8080 
