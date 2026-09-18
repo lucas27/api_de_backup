@@ -2,7 +2,6 @@ package com.microservice.auth.controller;
 
 import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,14 +16,12 @@ import com.microservice.auth.dto.request.CreateUserDto;
 import com.microservice.auth.dto.request.LoginUserDto;
 import com.microservice.auth.dto.response.TokenDto;
 import com.microservice.auth.service.UserService;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor 
 public class AuthController {
     private final UserService service;
