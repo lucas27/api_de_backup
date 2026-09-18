@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity 
-@Table (name = "File")
+@Table (name = "file")
 // @AllArgsConstructor 
 // @NoArgsConstructor
 @Getter 
@@ -33,7 +33,7 @@ public class File {
     private Long id;
     
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "data_id", referencedColumnName = "data_id",  nullable = false)
+    @JoinColumn(name = "data_id", referencedColumnName = "id",  nullable = false)
     private Data data;
     
     @Column(length = 100, nullable = false)

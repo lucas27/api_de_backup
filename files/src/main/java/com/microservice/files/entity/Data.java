@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity 
-@Table (name = "Data")
+@Table (name = "data")
 @AllArgsConstructor 
 @NoArgsConstructor 
 @Getter 
@@ -59,6 +59,6 @@ public class Data {
     @Column(name = "updated_at", updatable = true)
     private LocalDateTime updatedAt;
 
-    @OneToOne(mappedBy = "file")
+    @OneToOne(mappedBy = "data")
     private File file;
 }
