@@ -10,3 +10,6 @@ spring:
       max-file-size: 2GB
 server:
   port: 8083
+
+api:
+  folder-path: ${PATH}
