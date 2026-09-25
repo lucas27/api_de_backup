@@ -13,4 +13,7 @@ spring:
         jwt:
           public-key-location: classpath:public.key
 server:
-  port: 8080 
+  port: 8080
+
+api:
+  public-key: classpath:public.key
