@@ -8,7 +8,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -16,11 +15,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.microservice.auth.dto.response.TokenDto;
-
-import jakarta.security.auth.message.AuthException;
 
 @Service 
 public class JwtService {
@@ -41,7 +35,7 @@ public class JwtService {
         return timeZone.format(formatter);
     }
 
-    public Map<String, String> generatedAcessToken(Authentication authentication) {
+    public Map<String, String> generatedAcessToken(Authentication authentication, Integer userId) {
         Instant now = Instant.now();
         
         String scope = authentication.getAuthorities()
@@ -55,6 +49,7 @@ public class JwtService {
         .expiresAt(now.plus(5, ChronoUnit.MINUTES))
         .subject(authentication.getName())
         .claim("scope", scope)
+        .claim("userId", userId)
         .build();
         
         String accessToken = this.encoder.encode(JwtEncoderParameters.from(accessClaims)).getTokenValue();     
@@ -65,7 +60,7 @@ public class JwtService {
         );
     }
     
-    public Map<String, String> generatedRefreshToken(Authentication authentication) {
+    public Map<String, String> generatedRefreshToken(Authentication authentication, Integer userId) {
         Instant now = Instant.now();
         
         JwtClaimsSet refreshClaims = JwtClaimsSet.builder()
@@ -74,6 +69,7 @@ public class JwtService {
             .expiresAt(now.plus(7, ChronoUnit.DAYS))
             .subject(authentication.getName())
             .claim("scope", "REFRESH_TOKEN")
+            .claim("userId", userId)
             .build();
             
         String refreshToken = this.encoder.encode(JwtEncoderParameters.from(refreshClaims)).getTokenValue();
@@ -94,6 +90,7 @@ public class JwtService {
         .expiresAt(now.plus(5, ChronoUnit.MINUTES))
         .subject(jwt.getSubject())
         .claim("scope", jwt.getClaims().get("scope").toString().replace(" ", ""))
+        .claim("userId", jwt.getClaims().get("userId").toString().replace(" ", ""))
         .build();
         
         String accessToken = this.encoder.encode(JwtEncoderParameters.from(accessClaims)).getTokenValue();     
