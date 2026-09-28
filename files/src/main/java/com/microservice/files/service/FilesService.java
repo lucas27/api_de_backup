@@ -10,15 +10,23 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.microservice.files.dto.FileDto;
+import com.microservice.files.entity.FilesEntity;
+import com.microservice.files.repository.FileRepository;
 
-@Service 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor  
 public class FilesService {
     @Value("${api.folder-path}")
     private String folderPath;
  
+    private final FileRepository repository;
+
     @Async
     public CompletableFuture<String> saveChunkFiles(MultipartFile file, Integer chunkIndex, FileDto dto) throws IllegalStateException, IOException {
         String fileName = dto.name() + "_chunk_" + chunkIndex + "." + dto.mimetype().toString().toLowerCase();
@@ -33,8 +41,16 @@ public class FilesService {
         }
         file.transferTo(filePath.toFile());
         
+        saveDataBase(dto);
+        
         return CompletableFuture.completedFuture(
             "arquivo criado com sucesso" 
         );
+    }
+
+    @Transactional 
+    public void saveDataBase(FileDto dto) {
+        FilesEntity file = FilesEntity.saveFile(dto);
+        repository.save(file);
     }
 }
