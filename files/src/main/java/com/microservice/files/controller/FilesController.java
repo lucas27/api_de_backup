@@ -1,32 +1,57 @@
 package com.microservice.files.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
+// import java.io.File;
+// import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+// import java.nio.file.Files;
+// import java.nio.file.Path;
+// import java.nio.file.Paths;
+import java.util.concurrent.CompletableFuture;
 
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.microservice.files.dto.FileDto;
+import com.microservice.files.service.FilesService;
+
+import jakarta.servlet.ServletException;
+// import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/file")
 public class FilesController {
-    @RequestMapping(method = RequestMethod.POST, value="/teste")
-    public void teste(@RequestParam("file") MultipartFile file) throws IOException {
-        // Path text =  Paths.get(file.getOriginalFilename()).normalize().toAbsolutePath();
-        // Files.copy(file.getInputStream(), text );
-        // System.out.println(text);
-        byte[] dados = file.getInputStream().readAllBytes();
-        System.out.println(file.getSize());
-        System.out.println(file.getBytes());
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getContentType());
-        // System.out.println(file.getInputStream());
+    private final FilesService service;
+
+    FilesController(FilesService service) {
+        this.service = service;
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value="/files")
+    public CompletableFuture<ResponseEntity<String>> file(
+    // public ResponseEntity<String> file(
+        @RequestPart("file") MultipartFile file,
+        @RequestParam("chunkIndex") Integer chunk,
+        @RequestParam("totalChunks") Integer total,
+        @RequestPart("data") FileDto dto
+        // ,
+        // HttpServletRequest request
+    ) throws IOException, ServletException {
+        // System.out.println(dto);
+        System.out.println(file);
+        System.out.println(chunk);
+        System.out.println(total);
+        System.out.println(dto); 
+        // for(var teste : request.getParts()) {
+        //     System.out.println(teste.getName());
+        // }
+        return service.saveChunkFiles(file, chunk, dto).thenApply(resp -> 
+            ResponseEntity.status(HttpStatus.CREATED).body(resp)
+        );
     }
 }
