@@ -16,12 +16,13 @@ public class Services {
     }
 
     public String uploadDataFile(
+        String id,
         MultipartFile file,
         Integer chunk,
         Integer totalChunk,
         UploadDto uploadDto
     ) {
-        FileDto data = FileDto.createDataFile(uploadDto);
+        FileDto data = FileDto.createDataFile(uploadDto, id);
         String resp = client.storageFile(file, chunk, totalChunk, data);
         return resp;
     }
