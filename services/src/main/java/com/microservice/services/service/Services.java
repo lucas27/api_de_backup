@@ -4,15 +4,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.microservice.services.client.ServicesClient;
+import com.microservice.services.client.UserClient;
 import com.microservice.services.dto.FileDto;
 import com.microservice.services.dto.UploadDto;
+import com.microservice.services.dto.UserDto;
 
 @Service 
 public class Services {
-    private ServicesClient client;
+    private final ServicesClient servicesClient;
+    private final UserClient userClient;
 
-    public Services(ServicesClient client) {
-        this.client = client;
+    public Services(ServicesClient client, UserClient userClient) {
+        this.servicesClient = client;
+        this.userClient = userClient;
     }
 
     public String uploadDataFile(
@@ -22,8 +26,9 @@ public class Services {
         Integer totalChunk,
         UploadDto uploadDto
     ) {
-        FileDto data = FileDto.createDataFile(uploadDto, id);
-        String resp = client.storageFile(file, chunk, totalChunk, data);
+        UserDto userDto = userClient.getUserName(id);
+        FileDto data = FileDto.createDataFile(uploadDto, id, userDto.name());
+        String resp = servicesClient.storageFile(file, chunk, totalChunk, data);
         return resp;
     }
 }
