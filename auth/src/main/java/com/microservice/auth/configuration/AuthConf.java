@@ -28,7 +28,7 @@ public class AuthConf {
     @Value("${api.private-key}")
     private RSAPrivateKey privateKey;
  
-    private final static String permitRoutes [] = {"/h2-console/**", "/auth/sign-in", "/auth/sign-up"};
+    private final static String permitRoutes [] = {"/h2-console/**", "/auth/sign-in", "/auth/sign-up", "/user/users/**"};
 
     @Bean 
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
