@@ -7,6 +7,7 @@ import com.microservice.services.enums.Mimetype;
 
 public record FileDto(
     String userId,
+    String userName,
     String name,
     Mimetype mimetype,
     Integer duration,
@@ -14,9 +15,10 @@ public record FileDto(
     String filePath,
     LocalDateTime createdFile
 ) {
-    public static FileDto createDataFile(UploadDto dto, String userId) {
+    public static FileDto createDataFile(UploadDto dto, String userId, String userName) {
         return new FileDto(
             userId,
+            userName,
             dto.name(), 
             dto.mimetype(), 
             dto.duration(),  
