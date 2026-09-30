@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.microservice.auth.dto.request.CreateUserDto;
 import com.microservice.auth.dto.request.LoginUserDto;
 import com.microservice.auth.dto.response.TokenDto;
+import com.microservice.auth.dto.response.UserDto;
 import com.microservice.auth.entity.User;
 import com.microservice.auth.repository.UserRepository;
 
@@ -55,6 +56,12 @@ public class UserService {
     public Map<String, String> validationToken(String token) {
         String formattedToken = token.replace("Bearer", "");
         return service.generatedNewAccessToken(formattedToken);
+    }
+
+    @Transactional(readOnly = true)
+    public UserDto getUserName(Long id) {
+        User user = repository.getReferenceById(id);
+        return new UserDto(user.getName());
     }
 
 }
