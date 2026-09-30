@@ -7,6 +7,7 @@ import com.microservice.files.enums.Mimetype;
 
 public record FileDto(
     String userId,
+    String userName,
     String name,
     Mimetype mimetype,
     Integer duration,
