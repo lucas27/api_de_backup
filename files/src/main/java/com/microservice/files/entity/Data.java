@@ -33,19 +33,19 @@ public class Data {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = false, nullable = false)
     private Integer duration;
 
-    @Column(name = "file_length", unique = true, nullable = false)
+    @Column(name = "file_length", unique = false, nullable = false)
     private BigInteger fileLength;
 
     @Enumerated(EnumType.STRING)
     private Mimetype mimetype;
 
-    @Column(name = "physical_path", length = 100, unique = true, nullable = false)
-    private String physicalPath;
+    // @Column(name = "physical_path", length = 100, unique = true, nullable = false)
+    // private String physicalPath;
     
-    @Column(name = "file_path", length = 100, unique = true, nullable = false)
+    @Column(name = "file_path", length = 100, unique = false, nullable = false)
     private String filePath;
     
     @Column(name = "created_file", unique = true, nullable = false)
@@ -60,5 +60,5 @@ public class Data {
     private LocalDateTime updatedAt;
 
     @OneToOne(mappedBy = "data")
-    private File file;
+    private FilesEntity file;
 }

@@ -33,7 +33,7 @@ public class FilesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id", nullable = false, unique = false)
     private String user;
     
     @OneToOne(cascade = CascadeType.PERSIST)
