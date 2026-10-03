@@ -1,6 +1,5 @@
 package com.microservice.files.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,30 +22,54 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor  
 public class FilesService {
     @Value("${api.folder-path}")
-    private String folderPath;
- 
+    private String absoluteFolderPath;
+
     private final FileRepository repository;
 
     @Async
-    public CompletableFuture<String> saveChunkFiles(MultipartFile file, Integer chunkIndex, FileDto dto) throws IllegalStateException, IOException {
-        String fileName = dto.name() + "_chunk_" + chunkIndex + "." + dto.mimetype().toString().toLowerCase();
+    public CompletableFuture<String> saveChunkFiles(MultipartFile file, Integer chunkIndex, Integer totalChunk, FileDto dto) throws IllegalStateException, IOException {
         // System.out.println(Thread.currentThread().getName()); 
         
-        Path filePath = Paths.get(folderPath, fileName);
+        Path path = createFolder(totalChunk, dto);
+
+        String resp = createFile(file, path, chunkIndex, dto);
         
-        if(Files.exists(filePath)) {
-            return CompletableFuture.completedFuture(
-                "O arquivo já existe"
-            );
+        if(chunkIndex == totalChunk - 1) {
+            saveDataBase(dto);
         }
-        file.transferTo(filePath.toFile());
-        
-        saveDataBase(dto);
         
         return CompletableFuture.completedFuture(
-            "arquivo criado com sucesso" 
+            resp 
         );
     }
+
+    public Path createFolder(Integer totalChunk, FileDto dto) throws IOException {
+        String nameFolder = totalChunk <= 1 ? "\\" + dto.userName() : "\\temp"; 
+        String folderPath = absoluteFolderPath + nameFolder;
+         
+        Path path = Paths.get(folderPath);
+
+        if(!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+
+        return path;
+    }
+
+    public String createFile(MultipartFile file, Path folderPath, Integer chunkIndex, FileDto dto) throws IllegalStateException, IOException {
+        String fileName = dto.name() + "_chunk_" + chunkIndex + "." + dto.mimetype().toString().toLowerCase();
+        
+        Path filePath = folderPath.resolve(fileName);
+        
+        if(Files.exists(filePath)) {
+            return "O arquivo já existe";
+        }
+
+        file.transferTo(filePath.toFile());
+        
+        return "arquivo criado com sucesso"; 
+    }
+
 
     @Transactional 
     public void saveDataBase(FileDto dto) {
