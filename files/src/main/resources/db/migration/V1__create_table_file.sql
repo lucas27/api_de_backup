@@ -2,11 +2,11 @@ CREATE TYPE Mimetype AS ENUM ('MP4', 'ACC', 'MP3', 'WAV', 'WEBM', 'OGG', 'PNG', 
 
 CREATE TABLE IF NOT EXISTS data (
     id BIGSERIAL PRIMARY KEY,
-    duration INTEGER UNIQUE NOT NULL,
-    file_length BIGINT UNIQUE NOT NULL, 
+    duration INTEGER NOT NULL,
+    file_length BIGINT NOT NULL, 
     mimetype Mimetype NOT NULL,
-    physical_path VARCHAR(100) UNIQUE NOT NULL,
-    file_path VARCHAR(100) UNIQUE NOT NULL,
+    -- physical_path VARCHAR(100) UNIQUE NOT NULL,
+    file_path VARCHAR(100) NOT NULL,
     created_file TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS data (
 
 CREATE TABLE IF NOT EXISTS file (
     id BIGSERIAL PRIMARY KEY,
-    user_id INT UNIQUE NOT NULL,
+    user_id INT NOT NULL,
     data_id BIGINT,
     name VARCHAR(100) NOT NULL,
     hash VARCHAR(64) UNIQUE NOT NULL,
