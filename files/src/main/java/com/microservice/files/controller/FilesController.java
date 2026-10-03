@@ -50,7 +50,7 @@ public class FilesController {
         // for(var teste : request.getParts()) {
         //     System.out.println(teste.getName());
         // }
-        return service.saveChunkFiles(file, chunk, dto).thenApply(resp -> 
+        return service.saveChunkFiles(file, chunk, total, dto).thenApply(resp -> 
             ResponseEntity.status(HttpStatus.CREATED).body(resp)
         );
     }
