@@ -42,15 +42,7 @@ public class FilesController {
         // ,
         // HttpServletRequest request
     ) throws IOException, ServletException {
-        // System.out.println(dto);
-        System.out.println(file);
-        System.out.println(chunk);
-        System.out.println(total);
-        System.out.println(dto); 
-        // for(var teste : request.getParts()) {
-        //     System.out.println(teste.getName());
-        // }
-        return service.saveChunkFiles(file, chunk, total, dto).thenApply(resp -> 
+        return service.uploadFiles(file, chunk, total, dto).thenApply(resp -> 
             ResponseEntity.status(HttpStatus.CREATED).body(resp)
         );
     }
