@@ -42,8 +42,8 @@ public class Data {
     @Enumerated(EnumType.STRING)
     private Mimetype mimetype;
 
-    // @Column(name = "physical_path", length = 100, unique = true, nullable = false)
-    // private String physicalPath;
+    @Column(name = "local_path", length = 100, unique = false, nullable = false)
+    private String localPath;
     
     @Column(name = "file_path", length = 100, unique = false, nullable = false)
     private String filePath;

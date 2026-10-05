@@ -54,7 +54,7 @@ public class FilesEntity {
     @Column(name = "updated_at")
     private LocalDateTime updateAt;
     
-    public static FilesEntity saveFile(FileDto dto) {
+    public static FilesEntity saveFile(FileDto dto, String localPath) {
         FilesEntity file = new FilesEntity();
         
         file.setName(dto.name());
@@ -66,7 +66,7 @@ public class FilesEntity {
         data.setMimetype(dto.mimetype());
         data.setDuration(dto.duration());
         data.setFileLength(dto.fileLength());
-        // this.data.setPhysicalPath(dto.physicalPath());
+        data.setLocalPath(localPath);
         data.setFileLength(dto.fileLength());
         data.setFilePath(dto.filePath());
         data.setCreatedFile(dto.createdFile());

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS data (
     duration INTEGER NOT NULL,
     file_length BIGINT NOT NULL, 
     mimetype Mimetype NOT NULL,
-    -- physical_path VARCHAR(100) UNIQUE NOT NULL,
+    local_path VARCHAR(100) NOT NULL,
     file_path VARCHAR(100) NOT NULL,
     created_file TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
