@@ -3,11 +3,13 @@ package com.microservice.files.controller;
 // import java.io.File;
 // import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 // import java.nio.file.Files;
 // import java.nio.file.Path;
 // import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.microservice.files.dto.FileDto;
+import com.microservice.files.dto.request.FileDto;
+import com.microservice.files.dto.response.StreamingFileDto;
+import com.microservice.files.entity.FilesEntity;
 import com.microservice.files.service.FilesService;
 
 import jakarta.servlet.ServletException;
@@ -45,5 +49,10 @@ public class FilesController {
         return service.uploadFiles(file, chunk, total, dto).thenApply(resp -> 
             ResponseEntity.status(HttpStatus.CREATED).body(resp)
         );
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="files")
+    public List<StreamingFileDto> streaming(@RequestParam("page") Integer page) {
+        return service.streamingFiles(page);
     }
 }

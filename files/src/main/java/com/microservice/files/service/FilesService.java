@@ -3,14 +3,18 @@ package com.microservice.files.service;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.microservice.files.dto.FileDto;
+import com.microservice.files.dto.request.FileDto;
+import com.microservice.files.dto.response.StreamingFileDto;
+import com.microservice.files.entity.FilesEntity;
 import com.microservice.files.utils.FilesComponent;
 import com.microservice.files.utils.FolderComponent;
 import com.microservice.files.utils.DataBaseComponent;
@@ -54,5 +58,15 @@ public class FilesService {
         return CompletableFuture.completedFuture(
             resp 
         );
+    }
+
+    public List<StreamingFileDto> streamingFiles(Integer page) {
+        Page<FilesEntity> files = dataBaseComponent.fileData(page);
+        List<StreamingFileDto> dto = files.stream()
+            .map(file -> {
+                return new StreamingFileDto(file);
+            })
+            .toList();
+        return dto;
     }
 }
