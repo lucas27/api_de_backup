@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.microservice.files.dto.FileDto;
+import com.microservice.files.dto.request.FileDto;
 
 import lombok.RequiredArgsConstructor;
 

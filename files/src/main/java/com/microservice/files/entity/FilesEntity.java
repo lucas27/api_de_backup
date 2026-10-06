@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.microservice.files.dto.FileDto;
+import com.microservice.files.dto.request.FileDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
