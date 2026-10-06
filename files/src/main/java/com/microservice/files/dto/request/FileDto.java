@@ -1,4 +1,4 @@
-package com.microservice.files.dto;
+package com.microservice.files.dto.request;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
