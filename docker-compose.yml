@@ -1,0 +1,47 @@
+name: microservice
+services:
+  gateway:
+    container_name: gateway
+    build:
+      context: ./gateway
+      dockerfile: dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - LOCALHOST=${LOCALHOST}
+    ports: 
+      - "8080:8080"
+    networks:
+      - microservice-network
+  services:
+    container_name: services
+    build:
+      context: ./services
+      dockerfile: dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - LOCALHOST=${LOCALHOST}
+    ports: 
+      - "8082:8082"
+    networks:
+      - microservice-network
+  # auth:
+  #   container_name: auth
+  #   build:
+  #     context: ./auth
+  #     dockerfile: dockerfile
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=dev
+  #     - DB_USERNAME=${DB_USERNAME}
+  #     - DB_PASSWORD=${DB_PASSWORD}
+  #   ports: 
+  #     - "8081:8081"
+  #   volumes:
+  #     # ro - Read-Only, Garante que o contêiner não possa modificar ou deletar as chaves originais
+  #     - ./auth/src/main/resources/public.key:/app/resources/public.key:ro
+  #     - ./auth/src/main/resources/private.key:/app/resources/private.key:ro
+  
+# volumes:
+#   api:
+networks:
+  microservice-network:
+    driver: bridge  
