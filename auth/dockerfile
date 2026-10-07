@@ -1,0 +1,21 @@
+FROM eclipse-temurin:26-jdk AS build
+WORKDIR /app
+
+ENV DB_USERNAME=$DB_USERNAME
+ENV DB_PASSWORD=$DB_PASSWORD
+
+COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw .
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+RUN ./mvnw clean package -DskipTests
+
+FROM eclipse-temurin:26-jre-alpine
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8081
+CMD ["java", "-jar", "app.jar"]
