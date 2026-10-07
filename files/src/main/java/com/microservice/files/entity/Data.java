@@ -1,5 +1,6 @@
 package com.microservice.files.entity;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
@@ -28,7 +29,9 @@ import lombok.Setter;
 @NoArgsConstructor 
 @Getter 
 @Setter 
-public class Data {
+public class Data implements Serializable{
+    private static final long serialVersionUID = 1L;
+
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
