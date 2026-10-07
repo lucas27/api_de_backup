@@ -8,6 +8,12 @@ spring:
   servlet:
     multipart:
       max-file-size: 2GB
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      password: ${REDIS_PASS}
 server:
   port: 8083
 
