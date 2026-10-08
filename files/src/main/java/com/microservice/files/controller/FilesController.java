@@ -52,7 +52,7 @@ public class FilesController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value="files")
-    public List<StreamingFileDto> streaming(@RequestParam("page") Integer page) {
-        return service.streamingFiles(page);
+    public List<StreamingFileDto> streaming(@RequestParam("page") Integer page, @RequestParam("user") Long userId) {
+        return service.streamingFiles(page, userId);
     }
 }
