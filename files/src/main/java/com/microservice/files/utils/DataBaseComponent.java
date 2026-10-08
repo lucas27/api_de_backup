@@ -27,8 +27,8 @@ public class DataBaseComponent {
     
     @Cacheable("streaming") 
     @Transactional(readOnly = true)
-    public Page<FilesEntity> fileData(Integer page) {
+    public Page<FilesEntity> fileData(Integer page, Long id) {
         Pageable pageable = PageRequest.of(page, 10);
-        return repository.findAll(pageable);
+        return repository.findAllByUserId(id, pageable);
     }
 }
