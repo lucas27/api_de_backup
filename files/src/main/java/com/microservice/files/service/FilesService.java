@@ -60,8 +60,8 @@ public class FilesService {
         );
     }
 
-    public List<StreamingFileDto> streamingFiles(Integer page) {
-        Page<FilesEntity> files = dataBaseComponent.fileData(page);
+    public List<StreamingFileDto> streamingFiles(Integer page, Long userId) {
+        Page<FilesEntity> files = dataBaseComponent.fileData(page, userId);
         List<StreamingFileDto> dto = files.stream()
             .map(file -> {
                 return new StreamingFileDto(file);
