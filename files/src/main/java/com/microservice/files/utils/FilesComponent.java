@@ -14,6 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.microservice.files.dto.request.FileDto;
 
 import lombok.RequiredArgsConstructor;
+import net.bramp.ffmpeg.FFmpeg;
+import net.bramp.ffmpeg.FFmpegExecutor;
+import net.bramp.ffmpeg.FFprobe;
+import net.bramp.ffmpeg.builder.FFmpegBuilder;
+import net.bramp.ffmpeg.probe.FFmpegFormat;
+import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 
 @Component
 @RequiredArgsConstructor   
@@ -67,5 +73,17 @@ public class FilesComponent {
             throw new RuntimeException("Erro ao concatenar arquivos: " + e.getMessage());
         }
         return "Arquivo criado com sucesso";
+    }
+
+    public void testeFFMPEG() throws IOException {
+        FFmpeg ffmpeg = new FFmpeg("C:/ffmpeg-2026-10-08-git-ec420ba161-essentials_build/bin/ffmpeg.exe");
+        FFprobe ffprobe = new FFprobe("C:/ffmpeg-2026-10-08-git-ec420ba161-essentials_build/bin/ffprobe.exe");
+        FFmpegProbeResult in = ffprobe.probe("C:\\Users\\Lucas\\Documents\\projeto\\api_de_backup\\lucas\\arquivo.txt");
+        // FFmpegBuilder builder = new FFmpegBuilder().setInput(in).done();
+
+        // FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
+        FFmpegFormat format = in.getFormat();
+        // executor.createJob(builder).run();
+        System.out.println(format.filename);
     }
 }
