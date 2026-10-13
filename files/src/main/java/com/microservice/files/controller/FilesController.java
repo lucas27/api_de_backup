@@ -52,7 +52,8 @@ public class FilesController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value="files")
-    public List<StreamingFileDto> streaming(@RequestParam("page") Integer page, @RequestParam("user") Long userId) {
+    public List<StreamingFileDto> streaming(@RequestParam("page") Integer page, @RequestParam("user") Long userId, @RequestParam("userName") String userName) throws IOException {
+        System.out.print(userName);
         return service.streamingFiles(page, userId);
     }
 }
