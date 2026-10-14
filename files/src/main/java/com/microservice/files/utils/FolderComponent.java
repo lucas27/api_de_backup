@@ -11,10 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.microservice.files.dto.request.FileDto;
 
-import lombok.RequiredArgsConstructor;
-
 @Component 
-@RequiredArgsConstructor  
 public class FolderComponent {
     @Value("${api.folder-path}")
     private String absoluteFolderPath;
