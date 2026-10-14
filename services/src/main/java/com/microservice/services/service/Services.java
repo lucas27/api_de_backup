@@ -1,11 +1,14 @@
 package com.microservice.services.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.microservice.services.client.ServicesClient;
 import com.microservice.services.client.UserClient;
 import com.microservice.services.dto.FileDto;
+import com.microservice.services.dto.StreamingFileDto;
 import com.microservice.services.dto.UploadDto;
 import com.microservice.services.dto.UserDto;
 
@@ -30,5 +33,14 @@ public class Services {
         FileDto data = FileDto.createDataFile(uploadDto, id, userDto.name());
         String resp = servicesClient.storageFile(file, chunk, totalChunk, data);
         return resp;
+    }
+
+    public List<StreamingFileDto> streamingFiles(
+        String id,
+        Integer page
+    ) {
+        UserDto userDto = userClient.getUserName(id);
+        List<StreamingFileDto> streamingFileDto = servicesClient.streamingFiles(page, id, userDto.name());
+        return streamingFileDto;
     }
 }
