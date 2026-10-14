@@ -26,10 +26,14 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RestController
 @RequestMapping("/services")
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class ServicesController {
     private final Services service;
     
+    public ServicesController(Services service) {
+        this.service = service;
+    }
+
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> upload(
         @RequestHeader("X-User-Id") String id,

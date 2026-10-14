@@ -11,13 +11,15 @@ import com.microservice.files.dto.request.FileDto;
 import com.microservice.files.entity.FilesEntity;
 import com.microservice.files.repository.FileRepository;
 
-import lombok.RequiredArgsConstructor;
 
 @Component 
-@RequiredArgsConstructor 
 public class DataBaseComponent {
 
     private final FileRepository repository;
+
+    public DataBaseComponent(FileRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional 
     public void saveDataBase(FileDto dto, String localPath) {
@@ -25,7 +27,7 @@ public class DataBaseComponent {
         repository.save(file);
     }
     
-    @Cacheable("streaming") 
+    // @Cacheable("streaming") 
     @Transactional(readOnly = true)
     public Page<FilesEntity> fileData(Integer page, Long id) {
         Pageable pageable = PageRequest.of(page, 10);
