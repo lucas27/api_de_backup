@@ -8,6 +8,7 @@ import com.microservice.services.enums.Mimetype;
 
 public record StreamingFileDto(
     String name,
+    String miniatureFile,
     Mimetype mimetype,
     BigInteger fileLength,
     LocalDateTime createdFile,
