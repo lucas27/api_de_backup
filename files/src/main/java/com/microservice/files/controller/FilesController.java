@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,7 +54,7 @@ public class FilesController {
 
     @RequestMapping(method = RequestMethod.GET, value="files")
     public List<StreamingFileDto> streaming(@RequestParam("page") Integer page, @RequestParam("user") Long userId, @RequestParam("userName") String userName) throws IOException {
-        System.out.print(userName);
-        return service.streamingFiles(page, userId);
+        
+        return service.streamingFiles(page, userId, userName);
     }
 }
