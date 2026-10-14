@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.microservice.files.dto.request.FileDto;
 import com.microservice.files.enums.Mimetype;
 
-import lombok.RequiredArgsConstructor;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
@@ -24,11 +25,10 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 
 @Component
-@RequiredArgsConstructor   
 public class FilesComponent {
     @Value("${api.ffmpeg-absolute-path}")
-    private String ffmpegPath; 
-
+    private String ffmpegPath;
+    
     public String createChunkFiles(MultipartFile file, Path folderPath, Integer chunkIndex, Integer totalChunk, FileDto dto) throws IllegalStateException, IOException {
 
         String fileName = dto.name() + "_part_" + chunkIndex + "." + dto.mimetype().toString().toLowerCase();
@@ -121,5 +121,19 @@ public class FilesComponent {
         .addOutput("frame_original.jpg")
         .addExtraArgs("-vframes", "1") // Extrai estritamente 1 frame
         .done();
+    }
+
+    public String downloadFile(String miniaturePath) throws IOException {
+        File[] miniatureFiles = new File(miniaturePath).listFiles();
+        String imageBase64 = null;
+
+        for(File file:miniatureFiles) {
+            byte[] fileBytes = Files.readAllBytes(file.toPath());
+
+            String base64converted = Base64.getEncoder().encodeToString(fileBytes);
+            imageBase64 = "data:image/webp;base64," + base64converted;
+        }
+        
+        return imageBase64;
     }
 }
