@@ -37,4 +37,19 @@ public class FolderComponent {
         );
     }
 
+    public Map<String, String> createMiniatureFolder(String userName) throws IOException {
+        String miniatureStringPath = absoluteFolderPath + "/miniature-" + userName;
+        String userPath = absoluteFolderPath + "/" + userName;
+        
+        Path miniaturePath = Paths.get(miniatureStringPath);
+        
+        if(!Files.exists(miniaturePath)) {
+            Files.createDirectories(miniaturePath);
+        }
+
+        return Map.of(
+            "miniature", miniatureStringPath,
+            "user", userPath
+        );
+    }
 }
