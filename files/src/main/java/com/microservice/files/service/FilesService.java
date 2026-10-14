@@ -25,9 +25,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor  
 public class FilesService {
 
-    private final FolderComponent createFolderComponent;
+    private final FolderComponent folderComponent;
 
-    private final FilesComponent createFilesComponent;
+    private final FilesComponent filesComponent;
 
     private final DataBaseComponent dataBaseComponent;
 
@@ -38,18 +38,18 @@ public class FilesService {
     public CompletableFuture<String> uploadFiles(MultipartFile file, Integer chunkIndex, Integer totalChunk, FileDto dto) throws IllegalStateException, IOException {
         String resp = null;
 
-        Map<String, Path> folders = createFolderComponent.createFolder(totalChunk, dto);
+        Map<String, Path> folders = folderComponent.createFolder(totalChunk, dto);
 
         Path tempFolderPath = folders.get("temp folder");
 
         String definitivePath = folders.get("user folder").toString();
 
-        resp = createFilesComponent.createChunkFiles(file, tempFolderPath, chunkIndex, totalChunk, dto);
+        resp = filesComponent.createChunkFiles(file, tempFolderPath, chunkIndex, totalChunk, dto);
         
         countIndex.add(chunkIndex);
 
         if(countIndex.size() == totalChunk) {
-            resp = createFilesComponent.mergeChunkFiles(tempFolderPath.toString(), definitivePath, dto);
+            resp = filesComponent.mergeChunkFiles(tempFolderPath.toString(), definitivePath, dto);
             
             dataBaseComponent.saveDataBase(dto, definitivePath);
             countIndex.clear();
@@ -60,7 +60,14 @@ public class FilesService {
         );
     }
 
-    public List<StreamingFileDto> streamingFiles(Integer page, Long userId) {
+    public void createImagesMiniature(String userName) throws IOException {
+        Map<String, String> folder = folderComponent.createMiniatureFolder(userName);
+        filesComponent.testeFFMPEG(folder.get("miniature"), folder.get("user"));
+
+    }
+
+    public List<StreamingFileDto> streamingFiles(Integer page, Long userId) throws IOException {
+        // createFilesComponent.testeFFMPEG();
         Page<FilesEntity> files = dataBaseComponent.fileData(page, userId);
         List<StreamingFileDto> dto = files.stream()
             .map(file -> {
